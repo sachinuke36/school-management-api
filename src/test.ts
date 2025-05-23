@@ -1,4 +1,4 @@
-import db from './config/db'; // adjust path as needed
+import db from './config/db.js'; // adjust path as needed
 
 (async () => {
   try {
