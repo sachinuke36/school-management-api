@@ -12,23 +12,16 @@ type School={
 }
 
 export async function add_school(req: Request, res: Response):Promise<any>{
-    const { id, name, address, latitude, longitude }:School = req.body;
-
-    console.log({ id, name, address, latitude, longitude });
+    const { name, address, latitude, longitude }:School = req.body;
 
     if( !name || !address || isNaN(latitude) || isNaN(longitude)) return res.status(400).json({error: "Invalid input fields"});
     try {
-        const [rows] = await db.query('SELECT 1');
-            console.log('✅ DB connected:', rows);
 
        const response =  await db.execute(
       'INSERT INTO schoolInfo (name, address, latitude, longitude) VALUES (?, ?, ?, ?)',
       [ name, address, latitude, longitude]
     );
    
-
-    console.log(response);
-
     return res.status(201).json({ message: 'School added successfully' });
 
     } catch (error: any) {
@@ -49,7 +42,6 @@ export default async function listSchools(req: Request, res: Response): Promise<
 
   try {
     const [rows] = await db.execute('SELECT * FROM schoolInfo');
-    console.log(rows)
     const schools = Array.isArray(rows) ? rows : [];
     const sorted = schools.map((school: any) => ({
       ...school,
